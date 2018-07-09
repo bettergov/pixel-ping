@@ -16,7 +16,7 @@ if not window.pixel_ping_tracked
     canonicalUrl = if canonicalUrl.length > 0 then canonicalUrl else 'https://www.bettergov.org'
   url       = encodeURIComponent "#{titleText}#{separator}#{loc.protocol}//#{loc.host}#{loc.pathname}#{separator}#{canonicalUrl}"
   img       = document.createElement 'img'
-  img.setAttribute 'src', "<%= root %>/pixel.gif?key=#{url}"
+  img.setAttribute 'src', "https://pixel.bettergov.org/pixel.gif?key=#{url}"
   img.setAttribute 'width', '1'
   img.setAttribute 'height', '1'
   document.body.appendChild img
