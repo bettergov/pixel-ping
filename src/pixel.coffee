@@ -6,9 +6,15 @@
 if not window.pixel_ping_tracked
   loc       = window.location
   titleEl   = document.getElementsByTagName("title").item(0)
-  seperator = "☃"
-  titleText = titleEl.text.replace(/#{"\" + seperator}/g, "") or ""
-  url       = encodeURIComponent "#{titleText}#{seperator}#{loc.protocol}//#{loc.host}#{loc.pathname}"
+  separator = "|pixel-ping-break|"
+  titleText = titleEl.text.replace(/#{"\" + separator}/g, "") or ""
+  try
+    canonicalUrl = document.currentScript.dataset.bgaCanonical
+  catch
+    canonicalUrl = document.querySelector('script[data-bga-canonical]').dataset.bgaCanonical
+  finally
+    canonicalUrl = if canonicalUrl.length > 0 then canonicalUrl else 'https://www.bettergov.org'
+  url       = encodeURIComponent "#{titleText}#{separator}#{loc.protocol}//#{loc.host}#{loc.pathname}#{separator}#{canonicalUrl}"
   img       = document.createElement 'img'
   img.setAttribute 'src', "<%= root %>/pixel.gif?key=#{url}"
   img.setAttribute 'width', '1'
