@@ -33,7 +33,7 @@ flush = ->
   return unless config.endpoint
   data = serialize()
   endHeaders['Content-Length'] = data.length
-  request = endpoint.request 'POST', endParams.pathname, endHeaders
+  request = http.request endReqOpts
   request.write data
   request.end()
   request.on 'response', (response) ->
@@ -86,10 +86,15 @@ emptyHeaders =
 if config.endpoint
   console.info "Flushing hits to #{config.endpoint}"
   endParams = url.parse config.endpoint
-  endpoint  = http.createClient endParams.port or 80, endParams.hostname
-  endHeaders =
-    'host':         endParams.host
-    'Content-Type': 'application/x-www-form-urlencoded'
+  # endpoint  = http.createClient endParams.port or 80, endParams.hostname
+  endReqOpts =
+    host: endParams.hostname
+    port: endParams.port or 80
+    method: 'POST'
+    path: endParams.pathname
+    headers:
+      'host':         endParams.host
+      'Content-Type': 'application/x-www-form-urlencoded'
 else
   console.warn "No endpoint set. Hits won't be flushed, add \"endpoint\" to #{configPath}."
 
