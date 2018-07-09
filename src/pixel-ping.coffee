@@ -32,7 +32,7 @@ flush = ->
   log store
   return unless config.endpoint
   data = serialize()
-  endHeaders['Content-Length'] = data.length
+  endReqOpts['headers']['Content-Length'] = data.length
   request = http.request endReqOpts
   request.write data
   request.end()
